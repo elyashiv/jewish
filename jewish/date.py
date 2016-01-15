@@ -19,6 +19,7 @@ copies. THERE IS NO WARRANTY - USE AT YOUR OWN RISK.
 
 
 import datetime
+import gim
 
 HALAKIM_PER_HOUR = 1080
 HALAKIM_PER_DAY = 24 * 1080
@@ -323,13 +324,17 @@ class JewishDate(object):
             h - return date in hebrew.
             e - return date in english
         """
-        _formats = {
-                    'e' : '{d.day} {d.english_month_name} {d.year}' ,
-                    'h' : '{d.day} {d.hebrew_month_name} {d.year}' }
+
+        format_string = '{day} {month_name} {year}' 
+
         if format_code == '':
             format_code = 'e'
-        fms = _formats[format_code]
-        return fms.format(d=self)
+
+        if format_code == 'e':
+            return format_string.format(day=self.day, month_name=self.english_month_name, year=self.year)
+
+        elif format_code == 'h':
+            return format_string.format(day=gim.toGStr(self.day), month_name=self.hebrew_month_name, year=gim.toGStr(self.year))
 
 
 def _get_first_day_of_year(metonicCycleYear, molad):
